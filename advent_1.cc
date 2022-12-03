@@ -36,6 +36,7 @@ int main() {
     }
     
   }
+  std::cout << max << std::endl;
   std::cout  << max+max2+max3 << std::endl;
   return 0;
 }
