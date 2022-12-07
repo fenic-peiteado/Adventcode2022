@@ -14,6 +14,7 @@ int main() {
   std::ifstream input_file("input");
   std::string line;
   std::regex rgx("[0-9]+");
+  std::vector<size_t> size_dir_vector;
   std::map<std::string, size_t> dir;
   std::stack<std::string> dir_stack;
   std::regex rgx_dir("cd");
@@ -65,8 +66,21 @@ int main() {
   size_t final_sum = 0;
   for (auto const& x : dir) {
     std::cout << x.first << " " << x.second << std::endl;
+    size_dir_vector.push_back(x.second);
     if (x.second <= 100000) {
       final_sum += x.second;
+    }
+  }
+  size_t space_max = 70000000;
+  size_t need_space = 30000000;
+  size_t space_used = dir["/"];
+  size_t space_available = space_max - space_used;
+  std::sort(size_dir_vector.begin(), size_dir_vector.end());
+  for (auto const& x : size_dir_vector) {
+  
+    if(space_available + x >= need_space){
+      std::cout << "Tiene que quitar " << x << std::endl;
+      break;
     }
   }
 
