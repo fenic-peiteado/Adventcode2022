@@ -79,11 +79,11 @@ int main() {
   for (auto const& x : size_dir_vector) {
   
     if(space_available + x >= need_space){
-      std::cout << "Parte 2" << x << std::endl;
+      std::cout << "Parte 2: " << x << std::endl;
       break;
     }
   }
 
-  std::cout << "Parte 1" << final_sum << std::endl;
+  std::cout << "Parte 1: " << final_sum << std::endl;
   return 0;
 }
