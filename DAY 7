@@ -1,0 +1,67 @@
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <regex>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+
+#include "funcion.cc"
+
+// advent of code day 7
+
+int main() {
+  std::ifstream input_file("input");
+  std::string line;
+  // Sumar lo que sean numero
+  std::regex rgx("[0-9]+");
+  std::vector<size_t> total_dir;
+  // Buscar las lineas que contengan cd
+  std::map<std::string, size_t> dir;
+  std::stack<std::string> dir_stack;
+
+  std::regex rgx_dir("cd");
+  std::regex rgx_ant("cd\\s..$");
+  size_t sum = 0;
+  size_t sum_no=0;
+  std::string dir_name;
+  while (std::getline(input_file, line)) {
+    std::smatch match;
+    if(std::regex_search(line, match, rgx_dir)){
+      std::cout << "Linea: cd " << line << std::endl;
+      dir_name = line;
+      dir[dir_name] = 0;
+      if(std::regex_search(line, match, rgx_ant)){
+        size_t aux = dir[dir_stack.top()];
+        dir_stack.pop();
+        dir[dir_stack.top()] = aux + dir[dir_stack.top()];
+        continue;
+      }
+      dir_stack.push(dir_name);
+    }
+    while (std::regex_search(line, match, rgx)) {
+      for (auto x : match) {
+        sum_no= std::stoi(x.str());
+        if(sum_no <= 1000000){
+          std::cout << "Numero: " << sum_no << std::endl;
+          std::cout << "Linea: " << line << std::endl;
+          sum += sum_no;
+          dir[dir_name] += sum_no;
+        }
+      }
+      line = match.suffix().str();
+    }
+  }
+  std::cout << "Suma de los numeros: " << sum << std::endl;
+  //RECORRER EL MAP
+  size_t final_sum = 0;
+  for (auto const& x : dir) {
+    if(x.first != "$ cd /"){
+      final_sum += x.second;
+    }
+  }
+  std::cout << "Suma de los numeros:X " << final_sum << std::endl;
+  return 0;
+}
